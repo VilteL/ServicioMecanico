@@ -26,18 +26,15 @@ public class ServiceMecanico {
 		
 		this.clientesEnEspera.add(nuevoCliente);
 	}
-	public Cliente atenderCliente() throws noHayClienteQueAtenderException {
+	public Cliente atenderCliente(Cliente cliente) throws noHayClienteQueAtenderException {
+		
 		if(this.clientesEnEspera.size()==0)
 			throw new noHayClienteQueAtenderException();
-		
-		for (Cliente cliente : this.clientesEnEspera) {
-			if(cliente.getFechaAtencion()==null) {
+		if(this.clientesEnEspera.size()!=0) {	
 				cliente.setFechaAtencion(fechaActual());
-				
 				this.clientesEnEspera.remove(cliente);
 				this.clientesAtendidos.add(cliente);
 				return cliente;
-			}
 		}
 		return null;
 	}
