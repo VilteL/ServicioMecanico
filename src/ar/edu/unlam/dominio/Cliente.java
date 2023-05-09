@@ -1,24 +1,18 @@
 package ar.edu.unlam.dominio;
 
+
 public class Cliente {
 	
 	private String nombre;
 	private Integer numTelefono;
-	private String fecha;
-	private String fechaAtencion;
+	private Long fecha;
+	private Long fechaAtencion;
 	
-	public String getFechaAtencion() {
-		return fechaAtencion;
-	}
 
-	public void setFechaAtencion(String fechaAtencion) {
-		this.fechaAtencion = fechaAtencion;
-	}
 
-	public Cliente(String nombre, Integer numTelefono,String fecha) {
+	public Cliente(String nombre, Integer numTelefono) {
 		this.nombre=nombre; 
 		this.numTelefono= numTelefono;
-		this.fecha=fecha;
 	}
 
 	public String getNombre() {
@@ -37,12 +31,24 @@ public class Cliente {
 		this.numTelefono = numTelefono;
 	}
 
-	public String getFecha() {
+	public Long getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(String fecha) {
+	public void setFecha(Long fecha) {
 		this.fecha = fecha;
 	}
+
+	public Long getFechaAtencion() {
+		return fechaAtencion;
+	}
+
+	public void setFechaAtencion(Long fechaAtencion) {
+		this.fechaAtencion = fechaAtencion;
+	}
+
+	
+
+	
 	
 }

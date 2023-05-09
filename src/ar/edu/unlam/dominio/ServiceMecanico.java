@@ -1,52 +1,70 @@
 package ar.edu.unlam.dominio;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
+
 
 public class ServiceMecanico {
 	
 	private String nombre;
 	private List<Cliente> clientesEnEspera;
 	private List<Cliente> clientesAtendidos;
-	private Reloj reloj;
-	
 	
 	public ServiceMecanico(String nombre) {
 		this.nombre = nombre;
 		this.clientesEnEspera = new ArrayList<>();
 		this.clientesAtendidos = new ArrayList<>();
-		this.reloj = new Reloj();
+		
 	}
 	
-	public void añadirNuevoCliente(String nombre,Integer numTelefono) {
-	
+	public void añadirNuevoCliente(Cliente cliente) {
 		
-		String fecha = fechaActual();
-		Cliente nuevoCliente = new Cliente(nombre, numTelefono,fecha );
+		Long fecha = Reloj.ahora();
+		cliente.setFecha(fecha);
 		
-		this.clientesEnEspera.add(nuevoCliente);
+		this.clientesEnEspera.add(cliente);
 	}
 	public Cliente atenderCliente(Cliente cliente) throws noHayClienteQueAtenderException {
 		
 		if(this.clientesEnEspera.size()==0)
 			throw new noHayClienteQueAtenderException();
 		if(this.clientesEnEspera.size()!=0) {	
-				cliente.setFechaAtencion(fechaActual());
+				cliente.setFechaAtencion(Reloj.ahora());
 				this.clientesEnEspera.remove(cliente);
 				this.clientesAtendidos.add(cliente);
 				return cliente;
 		}
 		return null;
 	}
+	public Long obtenerTiempoMedioDeEsperaDeLosClientesQueAunNoHanSidoAtendidos() {
 	
-	
-	
-	
-	
-	private String fechaActual() {
-		DateFormat dateFormat = new SimpleDateFormat("MMM d, YYYY, HH:MM:ss");
+	Long sumaTiempos=0L;	
+	Long promedio;
+		for (Cliente cliente : clientesEnEspera) {
+		sumaTiempos+=(Reloj.ahora()-cliente.getFecha());
+		}
+	promedio = sumaTiempos/this.clientesEnEspera.size();
 		
-		String fecha = dateFormat.format(Calendar.getInstance().getTime());
-		return fecha;
+	return promedio/60000;
 	}
+	
+	public Long obtenerTiempoMedioDeEsperaDeLosClientesAtendidos() {
+	
+		Long sumaTiempos=0L;	
+		Long promedio;
+			for (Cliente cliente : clientesEnEspera) {
+			sumaTiempos+=(cliente.getFechaAtencion()-cliente.getFecha());
+			}
+		promedio = sumaTiempos/this.clientesEnEspera.size();
+		return promedio/60000;
+	}
+	
+	public Integer obtenerCantidadDeClientesEnEspera() {
+		return this.clientesEnEspera.size();
+	}
+	public Integer obtenerCantidadDeClienteAtendidos() {
+		return this.clientesAtendidos.size();
+	}
+	
+	
+	
+	
 }
